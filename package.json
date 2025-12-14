@@ -4,9 +4,10 @@
   "description": "npm init >",
   "license": "ISC",
   "author": "axai-kaizoku",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
+    "start": " node ./index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
