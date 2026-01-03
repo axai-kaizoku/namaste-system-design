@@ -18,6 +18,27 @@ export type Scalars = {
   _FieldSet: { input: any; output: any; }
 };
 
+export type Author = {
+  __typename?: 'Author';
+  books?: Maybe<Array<Maybe<Book>>>;
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
+};
+
+export type AuthorBooks = {
+  __typename?: 'AuthorBooks';
+  author: Author;
+  books?: Maybe<Array<Maybe<Book>>>;
+};
+
+export type Book = {
+  __typename?: 'Book';
+  author?: Maybe<Author>;
+  id: Scalars['ID']['output'];
+  publishedYear: Scalars['Int']['output'];
+  title: Scalars['String']['output'];
+};
+
 export type CreateProductInput = {
   description: Scalars['String']['input'];
   name: Scalars['String']['input'];
@@ -42,8 +63,28 @@ export type Product = {
 
 export type Query = {
   __typename?: 'Query';
+  author?: Maybe<Author>;
+  authorBooks?: Maybe<AuthorBooks>;
+  authors: Array<Author>;
+  book?: Maybe<Book>;
+  books: Array<Book>;
   product?: Maybe<Product>;
   products: Array<Product>;
+};
+
+
+export type QueryAuthorArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryAuthorBooksArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryBookArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -123,24 +164,53 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
-  CreateProductInput: CreateProductInput;
+  Author: ResolverTypeWrapper<Author>;
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  AuthorBooks: ResolverTypeWrapper<AuthorBooks>;
+  Book: ResolverTypeWrapper<Book>;
+  Int: ResolverTypeWrapper<Scalars['Int']['output']>;
+  CreateProductInput: CreateProductInput;
   Mutation: ResolverTypeWrapper<{}>;
   Product: ResolverTypeWrapper<Product>;
-  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   Query: ResolverTypeWrapper<{}>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
-  CreateProductInput: CreateProductInput;
+  Author: Author;
+  ID: Scalars['ID']['output'];
   String: Scalars['String']['output'];
+  AuthorBooks: AuthorBooks;
+  Book: Book;
+  Int: Scalars['Int']['output'];
+  CreateProductInput: CreateProductInput;
   Mutation: {};
   Product: Product;
-  ID: Scalars['ID']['output'];
   Query: {};
   Boolean: Scalars['Boolean']['output'];
+}>;
+
+export type AuthorResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Author'] = ResolversParentTypes['Author']> = ResolversObject<{
+  books?: Resolver<Maybe<Array<Maybe<ResolversTypes['Book']>>>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type AuthorBooksResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['AuthorBooks'] = ResolversParentTypes['AuthorBooks']> = ResolversObject<{
+  author?: Resolver<ResolversTypes['Author'], ParentType, ContextType>;
+  books?: Resolver<Maybe<Array<Maybe<ResolversTypes['Book']>>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type BookResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Book'] = ResolversParentTypes['Book']> = ResolversObject<{
+  author?: Resolver<Maybe<ResolversTypes['Author']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  publishedYear?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type MutationResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = ResolversObject<{
@@ -155,11 +225,19 @@ export type ProductResolvers<ContextType = DataSourceContext, ParentType extends
 }>;
 
 export type QueryResolvers<ContextType = DataSourceContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  author?: Resolver<Maybe<ResolversTypes['Author']>, ParentType, ContextType, RequireFields<QueryAuthorArgs, 'id'>>;
+  authorBooks?: Resolver<Maybe<ResolversTypes['AuthorBooks']>, ParentType, ContextType, RequireFields<QueryAuthorBooksArgs, 'id'>>;
+  authors?: Resolver<Array<ResolversTypes['Author']>, ParentType, ContextType>;
+  book?: Resolver<Maybe<ResolversTypes['Book']>, ParentType, ContextType, RequireFields<QueryBookArgs, 'id'>>;
+  books?: Resolver<Array<ResolversTypes['Book']>, ParentType, ContextType>;
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductArgs, 'id'>>;
   products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
 }>;
 
 export type Resolvers<ContextType = DataSourceContext> = ResolversObject<{
+  Author?: AuthorResolvers<ContextType>;
+  AuthorBooks?: AuthorBooksResolvers<ContextType>;
+  Book?: BookResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Product?: ProductResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
