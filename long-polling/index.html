@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Long polling</title>
+	</head>
+	<body>
+		<h1>Long Polling</h1>
+		<pre id="data"></pre>
+		<script>
+			async function getData(lastData) {
+				try {
+					const response = await fetch(
+						"http://localhost:4044/api/getData?lastData=" + lastData,
+					);
+					const result = await response.json();
+					document.getElementById("data").innerHTML = result.data;
+					getData(result.data);
+				} catch {}
+			}
+
+			getData();
+		</script>
+	</body>
+</html>
