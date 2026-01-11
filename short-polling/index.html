@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Short Polling</title>
+	</head>
+	<body>
+		<h1>Short polling example</h1>
+		<pre id="data-container"></pre>
+		<script>
+			async function getData() {
+				try {
+					const response = await fetch("http://localhost:4043/api/getData");
+					const data = await response.json();
+					const dataContainer = document.getElementById("data-container");
+					dataContainer.innerHTML = JSON.stringify(data, null, 2);
+				} catch {}
+			}
+
+			let intervalId;
+			function startPolling() {
+				intervalId = setInterval(() => {
+					getData();
+				}, 4000);
+			}
+
+			startPolling();
+
+			function stopPolling() {
+				clearInterval(intervalId);
+			}
+			// Clear the interval id When the page is unloaded
+			// stopPolling()
+		</script>
+	</body>
+</html>
